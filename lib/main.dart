@@ -14,6 +14,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext buildContext) {
+    return HomeWidget();
+  }
+}
+
+class HomeWidget extends StatefulWidget {
+  @override
+  _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
   void _addNewTransaction(String title, double amount) {
     Transaction tx = Transaction(
       title: title,
@@ -42,30 +54,39 @@ class _MyAppState extends State<MyApp> {
     ),
     Transaction(
         id: 't3',
-        title: 'Very Expensive Panties',
+        title: 'Very Expensive Stuff',
         date: DateTime.now(),
         amount: 999),
   ];
+
   void _showAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
-      backgroundColor: Colors.red,
+        backgroundColor: Colors.red,
         context: ctx,
         builder: (f) {
           return Text('stuff');
         });
   }
 
-  @override
-  Widget build(BuildContext buildContext) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('A Very Cool Bar 😎'),
           backgroundColor: Colors.green,
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => showModalBottomSheet(builder: (f){return null;},context: buildContext),
+            Builder(
+              builder: (bb) => IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    BuildContext bb;
+                    showModalBottomSheet(
+                        builder: (f) {
+                          bb = f;
+                          return Text('data');
+                        },
+                        context: bb);
+                  }),
             ),
           ],
         ),
@@ -98,7 +119,11 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green,
           child: Icon(Icons.add),
-          onPressed: () => showModalBottomSheet(context: buildContext,builder: (g){return Text('data');}),
+          onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (g) {
+                return Text('data');
+              }),
         ),
       ),
     );
