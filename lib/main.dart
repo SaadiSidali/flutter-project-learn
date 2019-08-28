@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => _showAddNewTransaction(buildContext),
+              onPressed: () => print(buildContext),
             ),
           ],
         ),
