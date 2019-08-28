@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () => print(buildContext),
+              onPressed: () => showModalBottomSheet(builder: (f){return null;},context: buildContext),
             ),
           ],
         ),
