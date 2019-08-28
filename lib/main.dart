@@ -16,7 +16,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext buildContext) {
-    return HomeWidget();
+    return MaterialApp(
+      home: HomeWidget(),
+    );
   }
 }
 
@@ -61,70 +63,58 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void _showAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
-        backgroundColor: Colors.red,
         context: ctx,
         builder: (f) {
-          return Text('stuff');
+          return NewTransaction(_addNewTransaction);
         });
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('A Very Cool Bar 😎'),
-          backgroundColor: Colors.green,
-          actions: <Widget>[
-            Builder(
-              builder: (bb) => IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    BuildContext bb;
-                    showModalBottomSheet(
-                        builder: (f) {
-                          bb = f;
-                          return Text('data');
-                        },
-                        context: bb);
-                  }),
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(children: <Widget>[
-              Card(
-                color: Colors.green,
-                elevation: 14,
-                child: Container(
-                  height: 50,
-                  width: 150,
-                  child: Center(
-                    child: Text(
-                      'Place Holder',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('A Very Cool Bar 😎'),
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          Builder(
+            builder: (bb) => IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  _showAddNewTransaction(context);
+                }),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(children: <Widget>[
+            Card(
+              color: Colors.green,
+              elevation: 14,
+              child: Container(
+                height: 50,
+                width: 150,
+                child: Center(
+                  child: Text(
+                    'Place Holder',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              NewTransaction(_addNewTransaction),
-              TransactionList(_userTransactions),
-            ]),
-          ),
+            ),
+            TransactionList(_userTransactions),
+          ]),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.green,
-          child: Icon(Icons.add),
-          onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (g) {
-                return Text('data');
-              }),
-        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add),
+        onPressed: () {
+          _showAddNewTransaction(context);
+        },
       ),
     );
   }
