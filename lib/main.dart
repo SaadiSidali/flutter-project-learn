@@ -10,8 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        accentColor: Colors.pinkAccent,
+      ),
       title: 'A very cool Bar 😎',
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -26,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final List<Transaction> _userTransactions = [
     Transaction(
         id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
@@ -49,31 +52,43 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _startAddNewTransaction(BuildContext ctx){
-    showModalBottomSheet(context: ctx, builder: (_){
-      return NewTransaction(_addNewTransaction);
-    });
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return NewTransaction(_addNewTransaction);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
         title: Text('A very cool Bar 😎'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add, ),onPressed: ()=>_startAddNewTransaction(context),)
+          IconButton(
+            icon: Icon(
+              Icons.add,
+            ),
+            onPressed: () => _startAddNewTransaction(context),
+          )
         ],
       ),
       body: SingleChildScrollView(
-              child: Column(
+        child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
               width: double.infinity,
               child: Card(
                 color: Colors.deepPurple,
-                child: Text('CHART!'),
+                child: Container(
+                  child: Text(
+                    'CHART!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  height: 50,
+                ),
               ),
             ),
             TransactionList(_userTransactions)
@@ -82,9 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
         child: Icon(Icons.add),
-        onPressed: ()=>_startAddNewTransaction(context),
+        onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
