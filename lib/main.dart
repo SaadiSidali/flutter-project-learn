@@ -65,7 +65,11 @@ class _HomeWidgetState extends State<HomeWidget> {
     showModalBottomSheet(
         context: ctx,
         builder: (f) {
-          return NewTransaction(_addNewTransaction);
+          return GestureDetector(
+            onTap: () {},
+            child: NewTransaction(_addNewTransaction),
+            behavior: HitTestBehavior.opaque,
+          );
         });
   }
 

@@ -24,15 +24,14 @@ class NewTransaction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             TextField(
+              
               // onChanged: (val) => titleInput = val,
               controller: titleController,
               decoration: InputDecoration(
                 counterText: '0/100',
                 labelText: 'Title',
               ),
-              onSubmitted: (s) {
-                submitDate();
-              },
+              onSubmitted: (s){}
             ),
             TextField(
               onSubmitted: (s) {
