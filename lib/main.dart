@@ -63,11 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
       }).toList();
     }
   
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount,DateTime date) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: date,
         id: DateTime.now().toString());
 
     setState(() {
@@ -82,6 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
           return NewTransaction(_addNewTransaction);
         });
   }
+
+  void _deleteTransaction(String id)
+  {
+    setState(() {
+     _userTransactions.removeWhere((tx){
+       return tx.id == id;
+     }); 
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Chart(_recentTransaction),
-            TransactionList(_userTransactions)
+            TransactionList(_userTransactions,_deleteTransaction)
           ],
         ),
       ),
