@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:self_expenses/widgets/chart.dart';
 
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown,DeviceOrientation.portraitUp]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -57,13 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   List<Transaction> get _recentTransaction {
-    return 
-      _userTransactions.where((tx){
-        return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7),),);
-      }).toList();
-    }
-  
-  void _addNewTransaction(String txTitle, double txAmount,DateTime date) {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
+  bool _chartView = false;
+
+  void _addNewTransaction(String txTitle, double txAmount, DateTime date) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
@@ -83,41 +92,85 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  void _deleteTransaction(String id)
-  {
+  void _deleteTransaction(String id) {
     setState(() {
-     _userTransactions.removeWhere((tx){
-       return tx.id == id;
-     }); 
+      _userTransactions.removeWhere((tx) {
+        return tx.id == id;
+      });
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    var mediaQuory = MediaQuery.of(context);
+        bool isLandscape =
+            mediaQuory.orientation == Orientation.landscape;
+    final appbar = AppBar(
+      title: Text('A very cool Bar 😎'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.add,
+          ),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+    final txList = Container(
+      child: TransactionList(_userTransactions, _deleteTransaction),
+      height: (mediaQuory.size.height -
+              appbar.preferredSize.height -
+              mediaQuory.padding.top) *
+          .7,
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('A very cool Bar 😎'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-            ),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appbar,
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransaction),
-            TransactionList(_userTransactions,_deleteTransaction)
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Chart View'),
+                  Switch(
+                    value: _chartView,
+                    onChanged: (val) {
+                      setState(() {
+                        _chartView = val;
+                      });
+                    },
+                  )
+                ],
+              ),
+            if (!isLandscape)
+              Container(
+                child: Chart(_recentTransaction),
+                height: (mediaQuory.size.height -
+                        appbar.preferredSize.height -
+                        mediaQuory.padding.top) *
+                    .3,
+              ),
+            if (!isLandscape) txList,
+            if(isLandscape)
+            _chartView
+                ? Container(
+                    child: Chart(_recentTransaction),
+                    height: (mediaQuory.size.height -
+                            appbar.preferredSize.height -
+                            mediaQuory.padding.top) *
+                        .7,
+                  )
+                : txList,
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      
+      floatingActionButtonLocation: isLandscape ? FloatingActionButtonLocation.endFloat:FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        
         child: Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),
       ),
